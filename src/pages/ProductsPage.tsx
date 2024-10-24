@@ -55,7 +55,9 @@ const ProductsPage: React.FC = () => {
       setIsSuccess(true);
     } catch (error) {
       console.error("Erreur lors de la mise à jour du produit:", error);
-      setMessage("Erreur lors de la mise à jour du produit.");
+      setMessage(
+        "Le prix ou la quantité est inférieur à 0. Erreur lors de la mise à jour du produit.",
+      );
       setIsSuccess(false);
     }
   };
