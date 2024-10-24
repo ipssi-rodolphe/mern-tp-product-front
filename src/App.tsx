@@ -1,12 +1,24 @@
-import { DarkThemeToggle } from "flowbite-react";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Wrapper from "./layouts/Wrapper";
+// import ProductList from './components/ProductList';
+// import AddProduct from './components/AddProduct';
+// import Home from './pages/Home';
+// import UpdateProduct from './components/UpdateProduct';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <main className="flex min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
-      <h1 className="text-2xl dark:text-white">Flowbite React + Vite</h1>
-      <DarkThemeToggle />
-    </main>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Wrapper />}>
+          {/* <Route index element={<Home />} />
+          <Route path="products" element={<ProductList />} /> */}
+          {/* <Route path="add-product" element={<AddProduct />} />
+          <Route path="edit/:id" element={<UpdateProduct />} /> */}
+        </Route>
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
