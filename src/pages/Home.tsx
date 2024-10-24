@@ -27,7 +27,7 @@ const Home: React.FC = () => {
               <div className="relative min-h-[30rem] w-full grow">
                 <img
                   className="size-full object-cover object-center"
-                  src="https://source.unsplash.com/featured/?bread,bakery"
+                  src="./images/product/pain_traditionnel1.jpeg"
                   alt="Pain traditionnel"
                 />
               </div>
@@ -51,7 +51,7 @@ const Home: React.FC = () => {
               <div className="flex flex-1 items-center justify-center px-8 py-6">
                 <img
                   className="w-full max-lg:max-w-xs"
-                  src="https://source.unsplash.com/featured/?croissant"
+                  src="./images/product/pain_au_beure.jpg"
                   alt="Croissants au beurre"
                 />
               </div>
@@ -75,7 +75,7 @@ const Home: React.FC = () => {
               <div className="flex flex-1 items-center justify-center px-8 py-6">
                 <img
                   className="h-40 object-cover object-center"
-                  src="https://source.unsplash.com/featured/?apple,pie,bakery"
+                  src="./images/product/pomme_tarte.jpg"
                   alt="Tarte aux pommes"
                 />
               </div>
@@ -99,7 +99,7 @@ const Home: React.FC = () => {
               <div className="relative min-h-[30rem] w-full grow">
                 <img
                   className="size-full object-cover object-center"
-                  src="https://source.unsplash.com/featured/?chocolate,eclair"
+                  src="./images/product/eclat_chocolat.jpg"
                   alt="Éclair au chocolat"
                 />
               </div>
