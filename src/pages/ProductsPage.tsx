@@ -8,6 +8,8 @@ import {
 import ConfirmDeletePopup from "../components/ConfirmDeletePopup";
 import ProductUpdate from "../components/ProductUpdate";
 import AddProduct from "../components/AddProduct";
+import MessageModal from "../components/MessageModal";
+import ProductList from "../components/ProductList";
 import { Product } from "../types/Product";
 
 const ProductsPage: React.FC = () => {
@@ -17,6 +19,8 @@ const ProductsPage: React.FC = () => {
   const [showAddPopup, setShowAddPopup] = useState(false);
   const [productToUpdate, setProductToUpdate] = useState<Product | null>(null);
   const [productToDelete, setProductToDelete] = useState<Product | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+  const [isSuccess, setIsSuccess] = useState<boolean>(true);
 
   // Fonction pour récupérer les produits
   const fetchProducts = async () => {
@@ -43,12 +47,16 @@ const ProductsPage: React.FC = () => {
   // Fonction pour confirmer la mise à jour
   const handleConfirmUpdate = async (updatedProduct: Product) => {
     try {
-      await updateProduct(updatedProduct._id, updatedProduct); // Correction ici
-      fetchProducts(); // Recharger la liste après la mise à jour
+      await updateProduct(updatedProduct._id, updatedProduct);
+      fetchProducts();
       setShowUpdatePopup(false);
       setProductToUpdate(null);
+      setMessage("Le produit a été mis à jour avec succès.");
+      setIsSuccess(true);
     } catch (error) {
       console.error("Erreur lors de la mise à jour du produit:", error);
+      setMessage("Erreur lors de la mise à jour du produit.");
+      setIsSuccess(false);
     }
   };
 
@@ -57,11 +65,15 @@ const ProductsPage: React.FC = () => {
     if (productToDelete) {
       try {
         await deleteProduct(productToDelete._id);
-        fetchProducts(); // Recharger la liste après suppression
+        fetchProducts();
         setShowDeletePopup(false);
         setProductToDelete(null);
+        setMessage("Le produit a été supprimé avec succès.");
+        setIsSuccess(true);
       } catch (error) {
         console.error("Erreur lors de la suppression du produit:", error);
+        setMessage("Erreur lors de la suppression du produit.");
+        setIsSuccess(false);
       }
     }
   };
@@ -75,39 +87,25 @@ const ProductsPage: React.FC = () => {
   }) => {
     try {
       await addProduct(product);
-      fetchProducts(); // Recharger la liste après l'ajout
+      fetchProducts();
       setShowAddPopup(false);
+      setMessage("Le produit a été ajouté avec succès.");
+      setIsSuccess(true);
     } catch (error) {
       console.error("Erreur lors de l'ajout du produit:", error);
+      setMessage("Erreur lors de l'ajout du produit.");
+      setIsSuccess(false);
     }
   };
 
-  // Fonction pour annuler la suppression
-  const handleCancelDelete = () => {
-    setShowDeletePopup(false);
-    setProductToDelete(null);
-  };
-
-  // Fonction pour annuler la mise à jour
-  const handleCancelUpdate = () => {
-    setShowUpdatePopup(false);
-    setProductToUpdate(null);
-  };
-
-  // Fonction pour annuler l'ajout de produit
-  const handleCancelAdd = () => {
-    setShowAddPopup(false);
-  };
-
   useEffect(() => {
-    fetchProducts(); // Charger les produits lors du montage du composant
+    fetchProducts();
   }, []);
 
   return (
     <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
       <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
         <div className="mx-auto max-w-5xl">
-          {/* Header - Titre et bouton ajouter */}
           <div className="gap-4 sm:flex sm:items-center sm:justify-between">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
               Liste des produits
@@ -121,70 +119,12 @@ const ProductsPage: React.FC = () => {
             </button>
           </div>
 
-          {/* Liste des produits */}
-          <div className="mt-6 flow-root sm:mt-8">
-            <div className="divide-y divide-gray-200 dark:divide-gray-700">
-              {products.length === 0 ? (
-                <p className="text-gray-600 dark:text-gray-400">
-                  Aucun produit disponible pour le moment.
-                </p>
-              ) : (
-                products.map((product) => (
-                  <div
-                    key={product._id}
-                    className="flex flex-wrap items-center gap-y-4 py-6"
-                  >
-                    <dl className="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                      <dt className="text-base font-medium text-gray-500 dark:text-gray-400">
-                        Nom du produit:
-                      </dt>
-                      <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                        {product.name}
-                      </dd>
-                    </dl>
-
-                    <dl className="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                      <dt className="text-base font-medium text-gray-500 dark:text-gray-400">
-                        Prix:
-                      </dt>
-                      <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                        {product.price} €
-                      </dd>
-                    </dl>
-
-                    <dl className="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                      <dt className="text-base font-medium text-gray-500 dark:text-gray-400">
-                        Quantité:
-                      </dt>
-                      <dd className="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                        {product.quantity > 0
-                          ? product.quantity
-                          : "Rupture de stock"}
-                      </dd>
-                    </dl>
-
-                    {/* Actions : Modifier et Supprimer */}
-                    <div className="grid w-full gap-4 sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end">
-                      {/* Bouton Modifier */}
-                      <button
-                        onClick={() => handleUpdateClick(product)}
-                        className="rounded-md bg-blue-500 px-3 py-2 text-white hover:bg-blue-600"
-                      >
-                        Modifier
-                      </button>
-                      {/* Bouton Supprimer */}
-                      <button
-                        onClick={() => handleDeleteClick(product)}
-                        className="w-full rounded-lg border border-red-700 px-3 py-2 text-center text-sm font-medium text-red-700 hover:bg-red-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-red-300 dark:border-red-500 dark:text-red-500 dark:hover:bg-red-600 dark:hover:text-white dark:focus:ring-red-900 lg:w-auto"
-                      >
-                        Supprimer
-                      </button>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
+          {/* Utilisation du nouveau composant ProductList */}
+          <ProductList
+            products={products}
+            onUpdateClick={handleUpdateClick}
+            onDeleteClick={handleDeleteClick}
+          />
         </div>
       </div>
 
@@ -192,7 +132,7 @@ const ProductsPage: React.FC = () => {
       {showAddPopup && (
         <AddProduct
           onAddProduct={handleAddProduct}
-          onCancel={handleCancelAdd}
+          onCancel={() => setShowAddPopup(false)}
         />
       )}
 
@@ -201,7 +141,7 @@ const ProductsPage: React.FC = () => {
         <ConfirmDeletePopup
           productName={productToDelete.name}
           onConfirm={handleConfirmDelete}
-          onCancel={handleCancelDelete}
+          onCancel={() => setShowDeletePopup(false)}
         />
       )}
 
@@ -210,7 +150,16 @@ const ProductsPage: React.FC = () => {
         <ProductUpdate
           product={productToUpdate}
           onUpdate={handleConfirmUpdate}
-          onCancel={handleCancelUpdate}
+          onCancel={() => setShowUpdatePopup(false)}
+        />
+      )}
+
+      {/* Affichage du modal de message */}
+      {message && (
+        <MessageModal
+          message={message}
+          isSuccess={isSuccess}
+          onClose={() => setMessage(null)}
         />
       )}
     </section>

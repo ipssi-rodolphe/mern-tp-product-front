@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Outlet } from "react-router-dom";
+// import { Outlet } from "react-router-dom";
 
 const Header: React.FC = () => {
   return (
@@ -23,19 +23,13 @@ const Header: React.FC = () => {
                     className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
                     aria-current="page"
                   >
-                    Dashboard
+                    Acceuil
                   </Link>
                   <Link
                     to="/products"
                     className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                   >
-                    Products
-                  </Link>
-                  <Link
-                    to="/add-product"
-                    className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                  >
-                    Add Product
+                    Produits
                   </Link>
                 </div>
               </div>
@@ -162,13 +156,14 @@ const Header: React.FC = () => {
       <header className="bg-white shadow">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            Dashboard
+            {/* Dashboard */}
           </h1>
         </div>
       </header>
       <main>
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <Outlet />
+          {/* On peu mettre ici le Outel ou au niveau du wrapper */}
+          {/* <Outlet /> */}
         </div>
       </main>
     </div>
